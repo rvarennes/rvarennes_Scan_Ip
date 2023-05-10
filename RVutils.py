@@ -2,7 +2,7 @@
 # Function and classes for personnal post-treating 
 ##################################################
 
-import hdf5
+import numpy as np 
 
 ## Create custom dictionnary class
 class mydict(dict):
@@ -25,6 +25,7 @@ class mydict(dict):
 
 ## Function to convert a HDF5 file to a custom dictionary
 def hdf5_to_dict(filename):
+    import h5py
     """Load a dictionary of arrays and strings as unicode characters from an HDF5 file."""
     with h5py.File(filename, 'r') as f:
         d = {}
@@ -34,8 +35,17 @@ def hdf5_to_dict(filename):
                 d[k] = v.decode('utf-8')
             else:
                 d[k] = np.array(v)
-    return d
+    return mydict(d)
 ## end of hdf5_to_dict
+
+## Create custom dictionnary class for spectra
+# class mydict2(dict):
+#     def __init__(self, *args, **kwargs):
+#         super(mydict, self).__init__(*args, **kwargs)
+#         self.__dict__ = self
+
+#     def spectra(self, key, )
+# ## end of mydict
 
 ## 2D Fourier Transform as defined in GYSELA native diagnostics
 def Fourier2D(F0, y0, x0):
