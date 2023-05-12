@@ -9,7 +9,7 @@ class mydict(dict):
     def __init__(self, *args, **kwargs):
         super(mydict, self).__init__(*args, **kwargs)
         self.__dict__ = self
-
+    ## Interest of declaring new values here and not in __init__ --> reduce memory usage
     def __getitem__(self, key): 
         if  key[:2] == 'dr'               : return np.gradient(self[key[2:]], self['rg'], axis=1)
         if  key[:2] == 'dt'               : return np.gradient(self[key[2:]], self['time'], axis=0)
@@ -18,13 +18,11 @@ class mydict(dict):
         if  key     == 'Ptransfert'       : return self['drRSpol_vE'] * (-self['Er'])
         if  key     == 'Ptransfert_approx': return self['RSpol_vE'] * (-self['drEr'])
         if  key     == 'Jr'               : return self['As']*(self['Gamma_vE'] + self['Gamma_vD'])
-        #q['Ptransfert_w_prefactor']  = -q['dRSpoldr'] * (-q['Er']) / (1 + 2 * q['q']**2)
-        #q['Ptransfert_withdia']      = -q['dRSpol_tot_from3Ddr'] * (-q['Er'])
         else: return super().__getitem__(key)
 ## end of mydict
 
 ## Function to convert a HDF5 file to a custom dictionary
-def hdf5_to_dict(filename):
+def hdf5_to_dict(filename, cls=mydict):
     import h5py
     """Load a dictionary of arrays and strings as unicode characters from an HDF5 file."""
     with h5py.File(filename, 'r') as f:
@@ -35,17 +33,8 @@ def hdf5_to_dict(filename):
                 d[k] = v.decode('utf-8')
             else:
                 d[k] = np.array(v)
-    return mydict(d)
+    return cls(d)
 ## end of hdf5_to_dict
-
-## Create custom dictionnary class for spectra
-# class mydict2(dict):
-#     def __init__(self, *args, **kwargs):
-#         super(mydict, self).__init__(*args, **kwargs)
-#         self.__dict__ = self
-
-#     def spectra(self, key, )
-# ## end of mydict
 
 ## 2D Fourier Transform as defined in GYSELA native diagnostics
 def Fourier2D(F0, y0, x0):
