@@ -24,6 +24,7 @@ class mydict(dict):
         if  key     == 'Jr'               : return self['As']*(self['Gamma_vE'] + self['Gamma_vD'])
         if  key     == 'ft'               : return np.sqrt(2*self['eps'])
         if  key     == 'nutheta_Gianakon' : return (0.452*self['ft']*self['nu_i']) / ( (1+1.03*self['nustar']**(1/2)+0.31*self['nustar'])*(1+0.66*self['nustar']*self['eps']**(3/2)) )
+        if  key     == 'RSpol'            : return self['RSpol_vE'] + self['RSpol_vD']
         else: return super().__getitem__(key)
 ## end of mydict
 
