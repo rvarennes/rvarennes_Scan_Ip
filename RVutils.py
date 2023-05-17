@@ -7,6 +7,7 @@ import numpy as np
 ## Create custom dictionnary class
 class mydict(dict):
     def __init__(self, *args, **kwargs):
+        self['ls'] = '-'
         super(mydict, self).__init__(*args, **kwargs)
         self.__dict__ = self
     ## Interest of declaring new values here and not in __init__ --> reduce memory usage
