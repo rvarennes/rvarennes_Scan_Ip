@@ -26,6 +26,7 @@ class mydict(dict):
         if  key     == 'ft'               : return np.sqrt(2*self['eps'])
         if  key     == 'nutheta_Gianakon' : return (0.452*self['ft']*self['nu_i']) / ( (1+1.03*self['nustar']**(1/2)+0.31*self['nustar'])*(1+0.66*self['nustar']*self['eps']**(3/2)) )
         if  key     == 'RSpol'            : return self['RSpol_vE'] + self['RSpol_vD']
+        if  key     == 'RSphi'            : return self['RSphi_vE'] + self['RSphi_vD']
         else: return super().__getitem__(key)
 ## end of mydict
 
@@ -208,5 +209,21 @@ def Derivee1(F, dx, periodic=False, axis=0):
         dFdx[-2] = c0 / dx * (F[0] - F[-3] - (F[1] - F[-4]) / 8.)
 
     return dFdx
-
 #end def Derivee1
+
+## Change hue of a color given in hexadecimal as a string
+def change_hue(str_color_hex, factor=0.75):
+    import matplotlib.colors as mcolors
+    """Change the hue of a color given in hexadecimal.
+    """
+    # Convert the hexadecimal color to RGB
+    rgb = mcolors.hex2color(str_color_hex)
+    # Convert the RGB color to HSV
+    hsv = mcolors.rgb_to_hsv(rgb)*factor
+    # Change the hue
+    hsv = (hsv[0], hsv[1], hsv[2])
+    # Convert the HSV color back to RGB
+    rgb = mcolors.hsv_to_rgb(hsv)
+    # Convert the RGB color to hexadecimal
+    return mcolors.rgb2hex(rgb)
+#end def change_hue
