@@ -220,8 +220,8 @@ def change_hue(str_color_hex, factor=0.75):
     rgb = mcolors.hex2color(str_color_hex)
     # Convert the RGB color to HSV
     hsv = mcolors.rgb_to_hsv(rgb)*factor
-    # Change the hue
-    hsv = (hsv[0], hsv[1], hsv[2])
+    # Change the hue and make sure it's between 0 and 1
+    hsv = ([min(i,1) for i in (hsv[0], hsv[1], hsv[2])])
     # Convert the HSV color back to RGB
     rgb = mcolors.hsv_to_rgb(hsv)
     # Convert the RGB color to hexadecimal
