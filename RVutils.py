@@ -17,6 +17,7 @@ class mydict(dict):
 
         if  key[:2] == 'dr'               : return Derivee1(self[key[2:]], self['rg'][1]-self['rg'][0], periodic=False, axis=1)
         if  key[:2] == 'dt'               : return Derivee1(self[key[2:]], self['time'][1]-self['time'][0], periodic=False, axis=0)
+        if  key[:4] == 'sqrt'             : return np.sqrt(self[key[4:]])
 
         if  key     == 'P'                : return -self['As'] * (- self['ns0'] * self['Er'] + 0.5 * self['Zs']**(-1) * self['drPperp'])
         if  key     == 'vorticity'        : return self['drP']
@@ -24,9 +25,11 @@ class mydict(dict):
         if  key     == 'Ptransfert_approx': return self['RSpol_vE'] * (-self['drEr'])
         if  key     == 'Jr'               : return self['As']*(self['Gamma_vE'] + self['Gamma_vD'])
         if  key     == 'ft'               : return np.sqrt(2*self['eps'])
+        #if  key     == 'nustar_gia'       : return self['nustar'] / np.sqrt(self['eps'])
         if  key     == 'nutheta_Gianakon' : return (0.452*self['ft']*self['nu_i']) / ( (1+1.03*self['nustar']**(1/2)+0.31*self['nustar'])*(1+0.66*self['nustar']*self['eps']**(3/2)) )
         if  key     == 'RSpol'            : return self['RSpol_vE'] + self['RSpol_vD']
         if  key     == 'RSphi'            : return self['RSphi_vE'] + self['RSphi_vD']
+        if  key     == 'Isq_Te_cor'       : return self['Isq_Te'] * self['n']**2
         else: return super().__getitem__(key)
 ## end of mydict
 
