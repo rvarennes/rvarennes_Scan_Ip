@@ -24,6 +24,10 @@ class mydict(dict):
         if  key     == 'Ptransfert'       : return self['drRSpol_vE'] * (-self['Er'])
         if  key     == 'Ptransfert_approx': return self['RSpol_vE'] * (-self['drEr'])
         if  key     == 'Jr'               : return self['As']*(self['Gamma_vE'] + self['Gamma_vD'])
+        if  key     == 'Jr_vE'            : return self['As']*self['Gamma_vE']
+        if  key     == 'Jr_vD'            : return self['As']*self['Gamma_vD']
+        if  key     == 'Jr_vEn0'          : return self['As']*self['Gamma_vEn0']
+        if  key     == 'Jr_vEdiffn0'      : return self['As']*self['Gamma_vEndiff0']
         if  key     == 'ft'               : return np.sqrt(2*self['eps'])
         #if  key     == 'nustar_gia'       : return self['nustar'] / np.sqrt(self['eps'])
         if  key     == 'nutheta_Gianakon' : return (0.452*self['ft']*self['nu_i']) / ( (1+1.03*self['nustar']**(1/2)+0.31*self['nustar'])*(1+0.66*self['nustar']*self['eps']**(3/2)) )
