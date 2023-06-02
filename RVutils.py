@@ -18,6 +18,8 @@ class mydict(dict):
         if  key[:2] == 'dr'               : return Derivee1(self[key[2:]], self['rg'][1]-self['rg'][0], periodic=False, axis=1)
         if  key[:2] == 'dt'               : return Derivee1(self[key[2:]], self['time'][1]-self['time'][0], periodic=False, axis=0)
         if  key[:4] == 'sqrt'             : return np.sqrt(self[key[4:]])
+        if  len(key.split('_times_'))>1   : return self[key.split('_times_')[0]] * self[key.split('_times_')[1]]
+        if  len(key.split('_div_'))>1     : return self[key.split('_div_')[0]] / self[key.split('_div_')[1]]
 
         if  key     == 'P'                : return -self['As'] * (- self['ns0'] * self['Er'] + 0.5 * self['Zs']**(-1) * self['drPperp'])
         if  key     == 'vorticity'        : return self['drP']
