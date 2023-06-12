@@ -36,6 +36,7 @@ class mydict(dict):
         if  key     == 'RSpol'            : return self['RSpol_vE'] + self['RSpol_vD']
         if  key     == 'RSphi'            : return self['RSphi_vE'] + self['RSphi_vD']
         if  key     == 'Isq_Te_cor'       : return self['Isq_Te'] * self['n']**2
+        if  key     == 'Qtot'       : return self['Qpar_vD'] + self['Qpar_vE'] + self['Qperp_vD'] + self['Qperp_vE']
         else: return super().__getitem__(key)
 ## end of mydict
 
