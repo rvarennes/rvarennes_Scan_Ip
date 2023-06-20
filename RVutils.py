@@ -87,6 +87,18 @@ def hdf5_to_dict(filename, cls=mydict):
     return cls(d)
 ## end of hdf5_to_dict
 
+## Function to quickly add plotting properties to a custom dictionary
+def load_qprof_dict(filename, title, c1='r', c2='b', ls='-', title_fancy=''):
+    qprof_dict = hdf5_to_dict(filename)
+    qprof_dict['title'] = title
+    qprof_dict['c'] = c1
+    qprof_dict['c2'] = c2
+    qprof_dict['ls'] = ls
+    if title_fancy == '': qprof_dict['title_fancy'] = title
+    else: qprof_dict['title_fancy'] = title_fancy
+    return qprof_dict
+## end of load_qprof_dict
+
 ## 2D Fourier Transform as defined in GYSELA native diagnostics
 def Fourier2D(F0, y0, x0):
 
