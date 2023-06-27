@@ -21,6 +21,8 @@ class mydict(dict):
         if  key[:4] == 'sqrt'             : return np.sqrt(self[key[4:]])
         if  len(key.split('_times_'))>1   : return self[key.split('_times_')[0]] * self[key.split('_times_')[1]]
         if  len(key.split('_div_'))>1     : return self[key.split('_div_')[0]] / self[key.split('_div_')[1]]
+        if  key[:2] == 'm_'               : return -self[key[2:]]
+
 
         if  key     == 'P'                : return -self['As'] * (- self['ns0'] * self['Er'] + 0.5 * self['Zs']**(-1) * self['drPperp'])
         if  key     == 'vorticity'        : return self['drP']
