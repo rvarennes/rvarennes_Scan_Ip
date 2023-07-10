@@ -27,7 +27,7 @@ class mydict(dict):
         if  key     == 'P'                : return -self['As'] * (- self['ns0'] * self['Er'] + 0.5 * self['Zs']**(-1) * self['drPperp'])
         if  key     == 'vorticity'        : return self['drP']
         if  key     == 'Ptransfert'       : return self['drRSpol_vE'] * (-self['Er'])
-        if  key     == 'Ptransfert_approx': return self['RSpol_vE'] * (-self['drEr'])
+        if  key     == 'Ptransfert_approx': return -self['RSpol_vE'] * (-self['drEr'])
         if  key     == 'Jr'               : return self['As']*(self['Gamma_vE'] + self['Gamma_vD'])
         if  key     == 'Jr_vE'            : return self['As']*self['Gamma_vE']
         if  key     == 'Jr_vD'            : return self['As']*self['Gamma_vD']

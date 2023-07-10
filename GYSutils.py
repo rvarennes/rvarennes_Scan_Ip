@@ -870,7 +870,6 @@ def Fourier2D(F0, y0, x0):
 #end def Fourier2D
 #--------------------------------------------------
 
-
 #-------------------------------------------------
 # Personal inverse FFT1D function
 #-------------------------------------------------
@@ -902,7 +901,6 @@ def iFourier1D(TFF, kx, axis=-1, pad=False, real=True):
     return F, x
 #end def iFourier1D
 #--------------------------------------------------
-
 
 #-------------------------------------------------
 # Personal inverse FFT2D function
