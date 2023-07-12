@@ -4,6 +4,53 @@
 
 import numpy as np 
 
+def kneo_Kim(nustar, eps):
+    fc   = (1 - 1.46 * np.sqrt(eps) + 0.46 * eps ** 1.5)
+    g = (1 - fc) / fc
+    nustar_Kim     = nustar * g /(1.46 * np.sqrt(eps))
+
+    mu00 = g * 0.53 / ((1 + 0.44 * nustar_Kim)*(1 + 0.44 * nustar * eps**1.5))
+    mu11 = g * 1.39 / ((1 + 0.35 * nustar_Kim)*(1 + 0.28 * nustar * eps**1.5))
+    K01  = g * 0.71 / ((1 + 0.20 * nustar_Kim)*(1 + 0.32 * nustar * eps**1.5))
+    mu01 = 2.5 * mu00 - K01
+    coeff_K1 = np.sqrt(2) * mu01 / (mu00 * (mu11 + np.sqrt(2)) - mu01 ** 2)
+    return coeff_K1
+
+def kneo_Kim_all(nustar, eps):
+    fc   = (1 - 1.46 * np.sqrt(eps) + 0.46 * eps ** 1.5)
+    g = (1 - fc) / fc
+    nustar_Kim     = nustar * g /(1.46 * np.sqrt(eps))
+
+    mu00 = g * 0.53 / ((1 + 0.44 * nustar_Kim)*(1 + 0.44 * nustar * eps**1.5))
+    mu11 = g * 1.39 / ((1 + 0.35 * nustar_Kim)*(1 + 0.28 * nustar * eps**1.5))
+    K01  = g * 0.71 / ((1 + 0.20 * nustar_Kim)*(1 + 0.32 * nustar * eps**1.5))
+    mu01 = 2.5 * mu00 - K01
+    coeff_K1 = np.sqrt(2) * mu01 / (mu00 * (mu11 + np.sqrt(2)) - mu01 ** 2)
+
+    # Theoretical predictions for k_neo (LIM)                                                                             
+    mu_00_B  = 0.53
+    mu_00_P  = 3.54
+    mu_00_PS = 1.35
+    mu_11_B  = 1.39
+    mu_11_P  = 11.2
+    mu_11_PS = 6.90
+    K_01_B   = 0.71
+    K_01_P   = 10.63
+    K_01_PS  = 5.57
+
+    nustar_Kim     = nustar * g /(1.46 * np.sqrt(eps))
+    nustar_Kim_b   = nustar * eps**1.5 / 6
+
+    mu_00  = g * mu_00_B / (1 + 2.92*nustar_Kim*mu_00_B/mu_00_P) / (1 + nustar_Kim_b*mu_00_P/mu_00_PS)
+    mu_11  = g * mu_11_B / (1 + 2.92*nustar_Kim*mu_11_B/mu_11_P) / (1 + nustar_Kim_b*mu_11_P/mu_11_PS)
+    K_01   = g * K_01_B  / (1 + 2.92*nustar_Kim*K_01_B/K_01_P)   / (1 + nustar_Kim_b*K_01_P/K_01_PS)
+
+    mu_01 = 2.5*mu_00 - K_01
+    k_Kim = np.sqrt(2)*mu_01 /(mu_00*(mu_11+np.sqrt(2)) - mu_01**2)
+
+    return k_Kim
+
+
 ## Create custom dictionnary class
 class mydict(dict):
     def __init__(self, *args, **kwargs):
@@ -21,6 +68,7 @@ class mydict(dict):
         if  key[:4] == 'sqrt'             : return np.sqrt(self[key[4:]])
         if  len(key.split('_times_'))>1   : return self[key.split('_times_')[0]] * self[key.split('_times_')[1]]
         if  len(key.split('_div_'))>1     : return self[key.split('_div_')[0]] / self[key.split('_div_')[1]]
+        if  len(key.split('_plus_'))>1    : return self[key.split('_plus_')[0]] + self[key.split('_plus_')[1]]
         if  key[:2] == 'm_'               : return -self[key[2:]]
 
 
@@ -39,8 +87,11 @@ class mydict(dict):
         if  key     == 'RSpol'            : return self['RSpol_vE'] + self['RSpol_vD']
         if  key     == 'RSphi'            : return self['RSphi_vE'] + self['RSphi_vD']
         if  key     == 'Isq_Te_cor'       : return self['Isq_Te'] * self['n']**2
-        if  key     == 'Qtot'       : return self['Qpar_vD'] + self['Qpar_vE'] + self['Qperp_vD'] + self['Qperp_vE']
-        if  key     == 'test'       : return self['Er'] - (self['eps']/self['q']) * self['VT']
+        if  key     == 'Qtot'             : return self['Qpar_vD'] + self['Qpar_vE'] + self['Qperp_vD'] + self['Qperp_vE']
+        if  key     == 'test'             : return self['Er'] - (self['eps']/self['q']) * self['VT']
+        if  key     == 'Kneo_Kim'         : return kneo_Kim(self['nustar'], self['eps'])
+        if  key     == 'Kneo_Kim_all'     : return kneo_Kim_all(self['nustar'], self['eps'])
+
         else: return super().__getitem__(key)
 ## end of mydict
 
