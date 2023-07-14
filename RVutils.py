@@ -3,6 +3,7 @@
 ##################################################
 
 import numpy as np 
+from scipy.ndimage import uniform_filter1d
 
 def kneo_Kim(nustar, eps):
     fc   = (1 - 1.46 * np.sqrt(eps) + 0.46 * eps ** 1.5)
@@ -71,7 +72,6 @@ class mydict(dict):
         if  len(key.split('_plus_'))>1    : return self[key.split('_plus_')[0]] + self[key.split('_plus_')[1]]
         if  key[:2] == 'm_'               : return -self[key[2:]]
 
-
         if  key     == 'P'                : return -self['As'] * (- self['ns0'] * self['Er'] + 0.5 * self['Zs']**(-1) * self['drPperp'])
         if  key     == 'vorticity'        : return self['drP']
         if  key     == 'Ptransfert'       : return self['drRSpol_vE'] * (-self['Er'])
@@ -81,9 +81,11 @@ class mydict(dict):
         if  key     == 'Jr_vD'            : return self['As']*self['Gamma_vD']
         if  key     == 'Jr_vEn0'          : return self['As']*self['Gamma_vEn0']
         if  key     == 'Jr_vEdiffn0'      : return self['As']*self['Gamma_vEndiff0']
+        if  key     == 'Jr_neo'           : return self['Jr_vD'] + self['Jr_vEn0']
         if  key     == 'ft'               : return np.sqrt(2*self['eps'])
         #if  key     == 'nustar_gia'       : return self['nustar'] / np.sqrt(self['eps'])
-        if  key     == 'nutheta_Gianakon' : return (0.452*self['ft']*self['nu_i']) / ( (1+1.03*self['nustar']**(1/2)+0.31*self['nustar'])*(1+0.66*self['nustar']*self['eps']**(3/2)) )
+        if  key     == 'mui_Gianakon'     : return (0.452*self['ft']*self['nu_i']) / ( (1+1.03*self['nustar']**(1/2)+0.31*self['nustar'])*(1+0.66*self['nustar']*self['eps']**(3/2)) )
+        if  key     == 'nuneo_Gianakon'   : return self['mui_Gianakon'] * (self['q']/self['eps'])**2
         if  key     == 'RSpol'            : return self['RSpol_vE'] + self['RSpol_vD']
         if  key     == 'RSphi'            : return self['RSphi_vE'] + self['RSphi_vD']
         if  key     == 'Isq_Te_cor'       : return self['Isq_Te'] * self['n']**2
@@ -91,6 +93,7 @@ class mydict(dict):
         if  key     == 'test'             : return self['Er'] - (self['eps']/self['q']) * self['VT']
         if  key     == 'Kneo_Kim'         : return kneo_Kim(self['nustar'], self['eps'])
         if  key     == 'Kneo_Kim_all'     : return kneo_Kim_all(self['nustar'], self['eps'])
+        if  key     == 'newx'             : return self['VP'] - self['Kneo_Kim_all'] * self['drT']
 
         else: return super().__getitem__(key)
 ## end of mydict
@@ -304,3 +307,8 @@ def change_hue(str_color_hex, factor=0.75):
     # Convert the RGB color to hexadecimal
     return mcolors.rgb2hex(rgb)
 #end def change_hue
+
+## Compute the sliding average of a 1D array
+def SA(arr, N=60, axis=1):
+    return uniform_filter1d(uniform_filter1d(arr,size=N,axis=axis),size=N,axis=axis)
+#end def sliding_average
