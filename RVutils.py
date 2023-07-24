@@ -94,7 +94,9 @@ class mydict(dict):
         if  key     == 'Kneo_Kim'         : return kneo_Kim(self['nustar'], self['eps'])
         if  key     == 'Kneo_Kim_all'     : return kneo_Kim_all(self['nustar'], self['eps'])
         if  key     == 'newx'             : return self['VP'] - self['Kneo_Kim_all'] * self['drT']
-
+        if  key     == 'Jr_neo_norm'      : return self['Jr_neo'] / self['n']
+        if  key     == 'Jr_vD_norm'       : return self['Jr_vD'] / self['n']
+        if  key     == 'VE'               : return -self['Er']
         else: return super().__getitem__(key)
 ## end of mydict
 
