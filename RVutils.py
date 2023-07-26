@@ -93,7 +93,8 @@ class mydict(dict):
         if  key     == 'test'             : return self['Er'] - (self['eps']/self['q']) * self['VT']
         if  key     == 'Kneo_Kim'         : return kneo_Kim(self['nustar'], self['eps'])
         if  key     == 'Kneo_Kim_all'     : return kneo_Kim_all(self['nustar'], self['eps'])
-        if  key     == 'newx'             : return self['VP'] - self['Kneo_Kim_all'] * self['drT']
+        if  key     == 'Vneo_pred'        : return self['Kneo_Kim_all'] * self['drT']
+        if  key     == 'Vneo_diff'        : return self['VP'] - self['Vneo_pred']
         if  key     == 'Jr_neo_norm'      : return self['Jr_neo'] / self['n']
         if  key     == 'Jr_vD_norm'       : return self['Jr_vD'] / self['n']
         if  key     == 'VE'               : return -self['Er']
