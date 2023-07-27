@@ -97,6 +97,7 @@ class mydict(dict):
         if  key     == 'Vneo_diff'        : return self['VP'] - self['Vneo_pred']
         if  key     == 'Jr_neo_norm'      : return self['Jr_neo'] / self['n']
         if  key     == 'Jr_vD_norm'       : return self['Jr_vD'] / self['n']
+        if  key     == 'Jr_vEn0_norm'     : return self['Jr_vEn0'] / self['n']
         if  key     == 'VE'               : return -self['Er']
         else: return super().__getitem__(key)
 ## end of mydict
