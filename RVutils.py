@@ -99,6 +99,7 @@ class mydict(dict):
         if  key     == 'Jr_vD_norm'       : return self['Jr_vD'] / self['n']
         if  key     == 'Jr_vEn0_norm'     : return self['Jr_vEn0'] / self['n']
         if  key     == 'VE'               : return -self['Er']
+        if  key     == 'test'               : return -self['Er'] + self['eps']/self['q'] * self['VT']
         else: return super().__getitem__(key)
 ## end of mydict
 
