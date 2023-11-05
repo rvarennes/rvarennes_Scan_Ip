@@ -6,3 +6,5 @@ data/TS45511_q15_aligned_GC7.hdf5
 data/TS45511_q15_ripple_ns05.hdf5
 data/TS45511_q15_ripple_ns1.hdf5
 data/TS45511_q05_ripple_ns033.hdf5
+data/q05_neoclassic.hdf5
+data/q15_neoclassic.hdf5

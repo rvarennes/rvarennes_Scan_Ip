@@ -71,8 +71,11 @@ class mydict(dict):
         if  len(key.split('_div_'))>1     : return self[key.split('_div_')[0]] / self[key.split('_div_')[1]]
         if  len(key.split('_plus_'))>1    : return self[key.split('_plus_')[0]] + self[key.split('_plus_')[1]]
         if  key[:2] == 'm_'               : return -self[key[2:]]
+        if  key[:4] == 'RMS_'             : return np.sqrt(np.mean(self[key[4:]]**2, axis=0))
 
         if  key     == 'P'                : return -self['As'] * (- self['ns0'] * self['Er'] + 0.5 * self['Zs']**(-1) * self['drPperp'])
+        if  key     == 'Pperp_contrib'    : return -self['As'] * ( 0.5 * self['Zs']**(-1) * self['drPperp'])
+        if  key     == 'Er_contrib'       : return -self['As'] * (- self['ns0'] * self['Er'])
         if  key     == 'vorticity'        : return self['drP']
         if  key     == 'Ptransfert'       : return self['drRSpol_vE'] * (-self['Er'])
         if  key     == 'Ptransfert_approx': return -self['RSpol_vE'] * (-self['drEr'])
@@ -90,6 +93,7 @@ class mydict(dict):
         if  key     == 'RSphi'            : return self['RSphi_vE'] + self['RSphi_vD']
         if  key     == 'Isq_Te_cor'       : return self['Isq_Te'] * self['n']**2
         if  key     == 'Qtot'             : return self['Qpar_vD'] + self['Qpar_vE'] + self['Qperp_vD'] + self['Qperp_vE']
+        if  key     == 'Qpar'             : return self['Qpar_vD'] + self['Qpar_vE']
         if  key     == 'test'             : return self['Er'] - (self['eps']/self['q']) * self['VT']
         if  key     == 'Kneo_Kim'         : return kneo_Kim(self['nustar'], self['eps'])
         if  key     == 'Kneo_Kim_all'     : return kneo_Kim_all(self['nustar'], self['eps'])
@@ -99,7 +103,11 @@ class mydict(dict):
         if  key     == 'Jr_vD_norm'       : return self['Jr_vD'] / self['n']
         if  key     == 'Jr_vEn0_norm'     : return self['Jr_vEn0'] / self['n']
         if  key     == 'VE'               : return -self['Er']
-        if  key     == 'test'               : return -self['Er'] + self['eps']/self['q'] * self['VT']
+        if  key     == 'test'             : return -self['Er'] + self['eps']/self['q'] * self['VT']
+        if  key     == 'RSpol_vEdiffn0'   : return self['RSpol_vE'] - self['RSpol_vEn0'] 
+        if  key     == 'epsonqVT'         : return self['eps']/self['q'] * self['VT']
+        if  key     == 'Press'            : return self['n'] * self['T']
+
         else: return super().__getitem__(key)
 ## end of mydict
 
